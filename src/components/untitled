@@ -1,0 +1,161 @@
+<template>
+    <section class="page">
+        <section class="content verticalCenter">
+            <div class="container--shadow"></div>
+            <section class="container--main">
+                <p>The month is <strong>{{getMonth()}}</strong>.</p>
+                <p>The hour is <strong>{{getHour()}}</strong>.</p>
+                <p>The time of day is <strong>{{getAMPM()}}</strong>.</p>
+                <li v-for="creature in filter(creatures)">
+                    {{ creature }}
+                </li>
+            </section>
+        </section>
+        <footer>here are some things</footer>
+    </section>
+</template>
+
+
+<script>
+
+export default {
+    name: 'item',
+
+    computed: {
+        date: function() {
+            return new Date()
+        }
+    },
+
+    data: function(){
+        return {
+            creatures: {
+                "blackBass": {
+                    "name": "Black Bass",
+                    "cost": 1,
+                    "month": [ 1, 2, 3, 4 ],
+                    "rarity": "rare",
+                    "type": "fish",
+                    "time": "am"
+                },
+                "grasshopper": {
+                    "name": "Grasshopper",
+                    "cost": 3,
+                    "month": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ],
+                    "rarity": "common",
+                    "type": "bug",
+                    "time": "am"
+                },
+                "abalone": {
+                    "name": "Abalone",
+                    "cost": 10,
+                    "month": [ 1, 2, 3, 4, 5, 6, 7 ],
+                    "rarity": "common",
+                    "type": "dive",
+                    "time": "pm"
+                },
+                "monarchButterfly": {
+                    "name": "Monarch Butterfly",
+                    "cost": 100,
+                    "month": [ 0, 7, 2, 5 ],
+                    "rarity": "rare",
+                    "type": "bug",
+                    "time": "pm"
+                },
+                "whaleShark": {
+                    "name": "Whale Shark",
+                    "cost": 200,
+                    "month": [ 1, 2, 3, 4 ],
+                    "rarity": "rare",
+                    "type": "fish",
+                    "time": "am"
+                },
+            }
+        }
+    },
+
+    methods: {
+
+        filter: function (creatures) {
+            return this.creatures.filter(function (creature) {
+                if (this.getAMPM() == creature.time) {
+                    return this.creature;
+                };
+            })
+        },
+
+        getHour: function () {
+            return this.date.getHours();
+        },
+
+        getAMPM: function() {
+            if (this.getHour() > 12) {
+                return 'pm';
+            } else {
+                return 'am';
+            }
+        },
+
+        getMonth: function() {
+            return this.date.getMonth();
+        },
+    }
+}
+
+</script>
+
+
+<style scoped>
+.page {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+}
+
+footer {
+    background-color: black;
+}
+
+.content {
+    order: -1;
+    flex-direction: column;
+    display: flex;
+    flex: 1;
+}
+
+.verticalCenter {
+    justify-content: center;
+    align-items: center;
+}
+
+.container--main {
+    width: 40%;
+    position: absolute;
+    background-color: #c0c0c0;
+    z-index: 100;
+}
+
+.container--flex {
+    display: flex;
+}
+
+.flex--row {
+    flex-direction: row;
+}
+
+.container--shadow {
+    border-left: 1px solid rebeccapurple;
+    border-top: 1px solid rebeccapurple;
+    z-index: -1;
+    position: relative;
+    top: -1em;
+    left: -1em;
+    width: 40%;
+    background-color: lightpink;
+    height: 160px;
+}
+
+.column {
+    flex-direction: column;
+}
+</style>
