@@ -6,7 +6,7 @@
                 <p>The month is <strong>{{getMonth()}}</strong>.</p>
                 <p>The hour is <strong>{{getHour()}}</strong>.</p>
                 <p>The time of day is <strong>{{getAMPM()}}</strong>.</p>
-                <li v-for="creature in creatures" v-if="getAMPM() == (creature.time) && filterMonth(creature.month)">
+                <li v-for="creature in creatures" v-if="filterTime(creature.time) && filterMonth(creature.month)">
                     {{ creature.name }}
                 </li>
             </section>
@@ -29,6 +29,14 @@ export default {
 
     data: function(){
         return {
+            timeofday: {
+                "allDay": [ 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 ],
+                "allNight": [ 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+                "midDay": [ 9, 10, 11, 12, 13, 14, 15, 16 ],
+                "morning": [ 4, 5, 6, 7, 8, 9 ],
+                "evening": [ 16, 17, 18, 19, 20, 21 ],
+                "default": []
+            },
             creatures: {
                 "bitterling": {
                     "name": "Bitterling",
@@ -38,7 +46,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 1,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "paleChub": {
                     "name": "Pale chub",
@@ -48,7 +56,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 1,
-                    "time": "am",
+                    "time": [ "midDay" ],
                 },
                 "crucianCarp": {
                     "name": "Crucian carp",
@@ -58,7 +66,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 2,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "dace": {
                     "name": "Dace",
@@ -68,7 +76,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 3,
-                    "time": "pm",
+                    "time": [ "allNight" ],
                 },
                 "barbelSteed": {
                     "name": "Barbel steed",
@@ -78,7 +86,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 3,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "carp": {
                     "name": "Carp",
@@ -88,7 +96,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 4,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "koi": {
                     "name": "Koi",
@@ -98,7 +106,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 4,
-                    "time": "pm",
+                    "time": [ "allDay" ],
                 },
                 "goldfish": {
                     "name": "Goldfish",
@@ -108,7 +116,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 1,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "popeyedGoldfish": {
                     "name": "Popeyed goldfish",
@@ -118,7 +126,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 1,
-                    "time": "am",
+                    "time": [ "midDay" ],
                 },
                 "killifish": {
                     "name": "Killifish",
@@ -128,7 +136,7 @@ export default {
                     "type": "fish",
                     "location": "pond",
                     "shadow size": 1,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "crawfish": {
                     "name": "Crawfish",
@@ -138,7 +146,7 @@ export default {
                     "type": "fish",
                     "location": "pond",
                     "shadow size": 2,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "softshelledTurtle": {
                     "name": "Soft Shelled Turtle",
@@ -148,7 +156,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 3,
-                    "time": "pm",
+                    "time": [ "allNight" ],
                 },
                 "tadpole": {
                     "name": "Tadpole",
@@ -158,7 +166,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 1,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "frog": {
                     "name": "Frog",
@@ -168,7 +176,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 1,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "freshwaterGoby": {
                     "name": "Freshwater goby",
@@ -178,7 +186,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 1,
-                    "time": "pm",
+                    "time": [ "allNight" ],
                 },
                 "loach": {
                     "name": "Loach",
@@ -188,7 +196,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 1,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "catfish": {
                     "name": "Catfish",
@@ -198,7 +206,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 1,
-                    "time": "pm",
+                    "time": [ "allNight" ],
                 },
                 "eel": {
                     "name": "Eel",
@@ -208,7 +216,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 0,
-                    "time": "pm",
+                    "time": [ "allNight" ],
                 },
                 "giantSnakehead": {
                     "name": "Giant snakehead",
@@ -218,7 +226,7 @@ export default {
                     "type": "fish",
                     "location": "lake",
                     "shadow size": 5,
-                    "time": "am",
+                    "time": [ "midDay" ],
                 },
                 "bluegill": {
                     "name": "Bluegill",
@@ -228,7 +236,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 2,
-                    "time": "am",
+                    "time": [ "midDay" ],
                 },
                 "yellowPerch": {
                     "name": "Yellow perch",
@@ -238,7 +246,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 2,
-                    "time": ["am", "pm"],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "blackBass": {
                     "name": "Black Bass",
@@ -248,7 +256,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 4,
-                    "time": ["am", "pm"],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "pike": {
                     "name": "Pike",
@@ -258,7 +266,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 5,
-                    "time": "?",
+                    "time": [ "allDay" ],
                 },
                 "pondSmelt": {
                     "name": "Pond smelt",
@@ -268,7 +276,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 2,
-                    "time": ["am", "pm"],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "sweetfish": {
                     "name": "Sweetfish",
@@ -278,7 +286,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 3,
-                    "time": ["am", "pm"],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "cherrySalmon": {
                     "name": "Cherry salmon",
@@ -288,7 +296,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 3,
-                    "time": "?",
+                    "time": [ "default" ],
                 },
                 "char": {
                     "name": "Char",
@@ -298,7 +306,7 @@ export default {
                     "type": "fish",
                     "location": "waterfall",
                     "shadow size": 3,
-                    "time": "?",
+                    "time": [ "default" ],
                 },
                 "rainbowTrout": {
                     "name": "Rainbow trout",
@@ -308,7 +316,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 4,
-                    "time": "?",
+                    "time": [ "default" ],
                 },
                 "stringfish": {
                     "name": "Stringfish",
@@ -318,7 +326,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 6,
-                    "time": "pm",
+                    "time": [ "allNight" ],
                 },
                 "salmon": {
                     "name": "Salmon",
@@ -328,7 +336,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 4,
-                    "time": ["am", "pm"],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "kingSalmon": {
                     "name": "King salmon",
@@ -338,7 +346,7 @@ export default {
                     "type": "fish",
                     "location": "waterfall",
                     "shadow size": 6,
-                    "time": [ "am", "pm" ],
+                    "time": [ "allDay", "allNight" ],
                 },
                 "mittenCrab": {
                     "name": "Mitten crab",
@@ -348,7 +356,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 2,
-                    "time": "pm",
+                    "time": [ "allNight" ],
                 },
                 "guppy": {
                     "name": "Guppy",
@@ -358,7 +366,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 1,
-                    "time": "am",
+                    "time": [ "midDay" ],
                 },
                 "nibbleFish": {
                     "name": "Nibble fish",
@@ -368,7 +376,7 @@ export default {
                     "type": "fish",
                     "location": "river",
                     "shadow size": 2,
-                    "time": "am",
+                    "time": [ "midDay" ],
                 },
             }
         }
@@ -396,6 +404,18 @@ export default {
             if (months.includes(this.date.getMonth())) {
                 return true;
             };
+        },
+
+        filterTime: function (times) {
+
+            // Looping through to check times in each creature's data
+            for (let time of times) {
+
+                let periodoftime = this.timeofday[time];
+                if (periodoftime.includes(this.date.getHours())) {
+                    return true;
+                };
+            }
         },
     }
 }
